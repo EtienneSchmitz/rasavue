@@ -1,0 +1,5 @@
+# OS
+.vscode/
+.idea/
+
+node_modules/
