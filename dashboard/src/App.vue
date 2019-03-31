@@ -14,8 +14,8 @@
     beforeCreate() {
       store.commit('setSocket', this.$socket);
       this.$socket.emit("add lang", {
-        test: "test",
-        test1 : "test2"
+        name: "France",
+        url: "lang/france.png"
       });
     }
   }
