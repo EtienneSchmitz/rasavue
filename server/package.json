@@ -2,9 +2,10 @@
   "name": "server-rasavue",
   "version": "0.0.1",
   "description": "The server instance for rasavue",
-  "main": "server.js",
+  "main": "src/server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc && node build/server.js"
   },
   "keywords": [
     "server"
@@ -12,7 +13,10 @@
   "author": "Etienne Schmitz <hello@etienne-schmitz.com>",
   "license": "MIT",
   "dependencies": {
+    "@types/mongodb": "^3.1.22",
+    "@types/socket.io": "^2.1.2",
     "mongodb": "^3.2.2",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "typescript": "^3.4.1"
   }
 }
