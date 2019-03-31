@@ -1,24 +1,23 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+  <div id="app" data-app>
+    <v-container fluid>
+      <!--  TODO: NAV --->
+      <router-view />
+    </v-container>
   </div>
 </template>
 
 <script>
-  import store from './store/index';
-  export default  {
-    beforeCreate() {
-      store.commit('setSocket', this.$socket);
-      this.$socket.emit("add lang", {
-        name: "France",
-        url: "lang/france.png"
-      });
-    }
+import store from "./store/index";
+export default {
+  beforeCreate() {
+    store.commit("setSocket", this.$socket);
+    this.$socket.emit("add lang", {
+      name: "France",
+      url: "lang/france.png"
+    });
   }
+};
 </script>
 
 <style lang="less">

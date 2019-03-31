@@ -1,14 +1,15 @@
 import store from "../store/index";
-import VueSocketIO from 'vue-socket.io';
+import VueSocketIO from "vue-socket.io";
 import Vue from "vue";
 
-
-Vue.use(new VueSocketIO({
+Vue.use(
+  new VueSocketIO({
     debug: true,
-    connection: 'http://localhost:9000',
+    connection: "http://localhost:9000",
     vuex: {
-        store,
-        actionPrefix: 'SOCKET_',
-        mutationPrefix: 'SOCKET_'
+      store,
+      actionPrefix: "SOCKET_",
+      mutationPrefix: "SOCKET_"
     }
-}));
+  })
+);

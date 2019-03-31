@@ -9,7 +9,7 @@ export default new Vuex.Store({
   },
   mutations: {
     setSocket: (state, socket) => {
-      state.io = socket
+      state.io = socket;
     }
   }
 });

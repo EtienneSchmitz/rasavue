@@ -28,17 +28,4 @@ class LangEndpoint {
     }
 }
 
-interface ILang {
-    id ?: number,
-    name: string,
-    url: string,
-    categories?: [ICategory]
-}
-
-interface ICategory {
-    id ?: number,
-    name: string,
-    url: string
-}
-
 export default new LangEndpoint();
