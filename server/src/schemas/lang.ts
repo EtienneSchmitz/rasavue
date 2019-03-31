@@ -2,11 +2,12 @@ import { Document, Schema, Model, model} from "mongoose";
 import { ILangModel } from "../interfaces/lang";
 
 let langSchema : Schema = new Schema({
-    name: String,
-    url: String,
+    name: { type : String , unique : true, required : true, dropDups: true },
+    url: { type : String , required : true, dropDups: true },
+    slug: { type : String , unique : true, required : true, dropDups: true },
     categories: {
-        name: String,
-        url: String
+        name: { type : String , unique : true, dropDups: true },
+        url: { type : String, dropDups: true }
     }
 });
 
