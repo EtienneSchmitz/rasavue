@@ -6,7 +6,7 @@ let langSchema : Schema = new Schema({
     url: { type : String , required : true, dropDups: true },
     slug: { type : String , unique : true, required : true, dropDups: true },
     categories: {
-        name: { type : String , unique : true, dropDups: true },
+        name: { type : String , dropDups: true },
         url: { type : String, dropDups: true }
     }
 });

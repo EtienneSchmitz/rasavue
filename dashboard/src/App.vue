@@ -8,14 +8,9 @@
 </template>
 
 <script>
-import store from "./store/index";
 export default {
   beforeCreate() {
-    store.commit("setSocket", this.$socket);
-    this.$socket.emit("add lang", {
-      name: "France",
-      url: "lang/france.png"
-    });
+    this.$socket.emit("test");
   }
 };
 </script>

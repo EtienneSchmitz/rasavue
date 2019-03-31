@@ -33,8 +33,16 @@ export default {
   },
   methods: {
     add(name, url) {
-      // Todo : Add lang in store.
-      console.log(url + name);
+      this.$socket.emit("add lang", {
+        name,
+        url
+      });
+      this.dialog = false;
+      // TODO : Add an information if it is pushed successfully ?
+      this.$options.sockets.success = data => {
+        console.log(data);
+        delete this.$options.sockets.success;
+      };
     }
   }
 };

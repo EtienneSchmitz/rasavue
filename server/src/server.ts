@@ -25,12 +25,18 @@ function run() {
     app_socket.listen(9000);
     console.log('The server listening to port 9000');
 
+    app_socket.origins('*:*') // for latest version
     app_socket.on('connection', (socket : Socket) => {
+        init(socket);
         socket.on("add lang", (data) => {
-            lang.add_lang(data);
+            lang.add_lang(data, socket);
         });
-
     });
+}
+
+// All socket send on the user during the first connection.
+function init(socket : Socket) {
+    lang.get_langs(socket);
 }
 
 run();
