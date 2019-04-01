@@ -18,3 +18,9 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
+  web:
+    image: nginx
+    volumes:
+      - ./images:/usr/share/nginx/html
+    ports:
+      - "8080:80"

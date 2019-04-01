@@ -1,10 +1,10 @@
 <template>
-  <div id="app" data-app>
+  <v-app>
     <v-container fluid>
       <!--  TODO: NAV --->
       <router-view />
     </v-container>
-  </div>
+  </v-app>
 </template>
 
 <script>

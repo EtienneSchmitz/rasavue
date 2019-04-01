@@ -3,11 +3,11 @@
     <v-layout row>
       <v-dialog v-model="dialog" width="500">
         <v-btn color="blue" class="text-none" slot="activator" round>
-          Ajouter une langue
+          Ajouter une catégorie
         </v-btn>
         <v-card>
           <v-card-title class="lighten-3" primary-title>
-            Ajouter une langue
+            Ajouter une catégorie
           </v-card-title>
           <v-divider></v-divider>
           <v-card-actions>
@@ -19,18 +19,16 @@
     <v-container>
       <v-layout row wrap space-between justify-space-between>
         <v-flex xs12 md6 wrap v-for="lang in langs" :key="lang._id" pa-2>
-          <router-link :to="{ name: 'category', params: { slug: lang.slug } }">
-            <v-card v-ripple>
-              <v-img src="https://via.placeholder.com/775x250.png" />
-              <v-card-title>
-                <div>
-                  <h3 class="headline">
-                    {{ lang.name }}
-                  </h3>
-                </div>
-              </v-card-title>
-            </v-card>
-          </router-link>
+          <v-card v-ripple>
+            <v-img src="https://via.placeholder.com/775x250.png" />
+            <v-card-title>
+              <div>
+                <h3 class="headline">
+                  {{ lang.name }}
+                </h3>
+              </div>
+            </v-card-title>
+          </v-card>
         </v-flex>
       </v-layout>
     </v-container>
