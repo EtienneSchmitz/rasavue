@@ -16,11 +16,32 @@
         </v-card>
       </v-dialog>
     </v-layout>
+    <v-layout row wrap>
+      <v-flex xs12 md5 wrap>
+        <v-card v-for="lang in langs" :key="lang._id">
+          <v-img
+            src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
+            aspect-ratio="4.0"
+          ></v-img>
+          <v-card-title primary-title>
+            <div>
+              <h3 class="headline mb-0">
+                {{ lang.name }}
+              </h3>
+            </div>
+          </v-card-title>
+          <v-card-actions>
+            <v-btn color="blue" round large>Go</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </div>
 </template>
 
 <script>
 import FormLang from "@/components/FormLang.vue";
+import { mapGetters } from "vuex";
 export default {
   name: "Lang",
   components: {
@@ -30,6 +51,11 @@ export default {
     return {
       dialog: false
     };
+  },
+  computed: {
+    ...mapGetters({
+      langs: "lang/get_langs"
+    })
   },
   methods: {
     add(name, url) {

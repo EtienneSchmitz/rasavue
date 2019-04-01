@@ -25,12 +25,13 @@ class LangEndpoint {
                 }
                 
                 socket.emit("success",!err);
+                this.get_langs(socket);
             }));
     }
 
     get_langs(socket : Socket) : void {
         this.model_.find({}, function(err, users) {
-            socket.emit("get lang",!err);
+            socket.emit("get lang", users);
         });
     }
 }
