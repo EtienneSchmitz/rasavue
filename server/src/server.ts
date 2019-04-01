@@ -29,7 +29,7 @@ function run() {
     app_socket.on('connection', (socket : Socket) => {
         init(socket);
         socket.on("add lang", (data) => {
-            lang.add_lang(data, socket);
+            lang.addLang(data, socket);
         });
         socket.on("add category", (id_number, data) => {
             lang.addCategory(socket, id_number, data);
@@ -39,7 +39,7 @@ function run() {
 
 // All socket send on the user during the first connection.
 function init(socket : Socket) {
-    lang.get_langs(socket);
+    lang.getLangs(socket);
 }
 
 run();
