@@ -1,48 +1,45 @@
 <template>
-  <div>
-    <v-layout row>
-      <v-dialog v-model="dialog" width="500">
-        <v-btn color="blue" class="text-none" slot="activator" round>
-          Ajouter une catégorie
-        </v-btn>
-        <v-card>
-          <v-card-title class="lighten-3" primary-title>
-            Ajouter une catégorie
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <FormLang @cancel="dialog = false" @submit="add" />
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-layout>
-    <v-container>
-      <v-layout row wrap space-between justify-space-between>
-        <v-flex xs12 md6 wrap v-for="lang in langs" :key="lang._id" pa-2>
-          <v-card v-ripple>
-            <v-img src="https://via.placeholder.com/775x250.png" />
-            <v-card-title>
-              <div>
-                <h3 class="headline">
-                  {{ lang.name }}
-                </h3>
-              </div>
-            </v-card-title>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-container>
-  </div>
+  <v-layout row wrap text-xs-left>
+    <v-flex xs3 mx-3>
+      <v-card>
+        <v-card-title>
+          <div>
+            <h3 class="headline">
+              Test
+            </h3>
+          </div>
+        </v-card-title>
+        <v-card-text text-xs-left>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt
+          vitae, necessitatibus sapiente nam doloremque minus, dicta aliquid
+          magnam eius ipsa quaerat eveniet, enim aspernatur autem quas labore
+          deleniti modi minima.
+        </v-card-text>
+      </v-card>
+    </v-flex>
+    <v-flex xs3 mx-3>
+      <v-card>
+        <v-card-title>
+          <h3 class="headline">
+            Test 2
+          </h3>
+        </v-card-title>
+        <v-card-text>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt
+          vitae, necessitatibus sapiente nam doloremque minus, dicta aliquid
+          magnam eius ipsa quaerat eveniet, enim aspernatur autem quas labore
+          deleniti modi minima.
+        </v-card-text>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
-import FormLang from "@/components/FormLang.vue";
 import { mapGetters } from "vuex";
+
 export default {
   name: "Lang",
-  components: {
-    FormLang
-  },
   data() {
     return {
       dialog: false
