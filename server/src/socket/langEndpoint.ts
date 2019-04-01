@@ -1,5 +1,5 @@
 import { model, Model } from "mongoose";
-import { ILangModel } from "../interfaces/lang";
+import { ILangModel, ICategory } from "../interfaces/lang";
 import { Socket } from "socket.io";
 
 class LangEndpoint {
@@ -29,11 +29,35 @@ class LangEndpoint {
             }));
     }
 
+    /** Get a language in the database.
+     *
+     * @return all langs.
+     */
     get_langs(socket : Socket) : void {
-        this.model_.find({}, function(err, users) {
-            socket.emit("get lang", users);
+        this.model_.find({}, function(err, langs) {
+            socket.emit("get lang", langs);
         });
     }
+
+    /**
+     * TODO add an error when the category is not set.
+     */
+    addCategory(socket: Socket, id : Number, category: ICategory) {
+        console.log(category);
+        console.log(id);
+        this.model_.findOne({_id : id}, (err, lang : ILangModel) =>{
+            category.slug = category.name.toLowerCase();;
+
+            if(lang.categories)
+                lang.categories.push(category);
+            else
+                lang.categories = [category];
+            lang.save();
+            socket.emit("success",!err);
+            this.get_langs(socket);
+        });
+    }
+
 }
 
 export default new LangEndpoint();

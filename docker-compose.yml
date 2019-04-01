@@ -23,4 +23,4 @@ services:
     volumes:
       - ./images:/usr/share/nginx/html
     ports:
-      - "8080:80"
+      - "9001:80"

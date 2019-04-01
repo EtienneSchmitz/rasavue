@@ -4,8 +4,11 @@ export interface ILangModel extends Document {
     name: String,
     url: String,
     slug ?: String,
-    categories ?: {
-        name: String,
-        url: String
-    }
+    categories: [ICategory]
+}
+
+export interface ICategory extends Document {
+    name: String,
+    description: String,
+    slug: String
 }

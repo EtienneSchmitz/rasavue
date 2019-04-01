@@ -31,6 +31,9 @@ function run() {
         socket.on("add lang", (data) => {
             lang.add_lang(data, socket);
         });
+        socket.on("add category", (id_number, data) => {
+            lang.addCategory(socket, id_number, data);
+        });
     });
 }
 

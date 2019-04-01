@@ -7,14 +7,6 @@
   </v-app>
 </template>
 
-<script>
-export default {
-  beforeCreate() {
-    this.$socket.emit("test");
-  }
-};
-</script>
-
 <style lang="less">
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;

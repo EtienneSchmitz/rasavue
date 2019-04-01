@@ -5,6 +5,7 @@ import router from "./services/router";
 import "./services/socket";
 import store from "./store/index";
 import "./registerServiceWorker";
+import "./services/flag";
 
 Vue.config.productionTip = false;
 
