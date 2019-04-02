@@ -9,14 +9,14 @@ let langSchema : Schema = new Schema({
   categories: {
     type: Array,
     items: {
-      name: { type: String, dropDups: true },
+      name: { type: String,unique: true, dropDups: true },
       description: { type: String, dropDups: true },
-      slug: { type: String, dropDups: true }
+      slug: { type: String, unique: true, dropDups: true }
     },
     default: undefined
   }
 })
 
-langSchema.plugin(arrayUniquePlugin)
+langSchema.plugin(arrayUniquePlugin);
 
 export const lang: Model<ILangModel> = model<ILangModel>('lang', langSchema)

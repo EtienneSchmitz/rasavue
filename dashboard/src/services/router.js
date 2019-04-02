@@ -18,9 +18,15 @@ export default new Router({
     },
     {
       path: "/lang/:slug",
+      name: "categories",
+      component: () =>
+        import(/* webpackChunkName: "category" */ "../views/lang/Categories.vue")
+    },
+    {
+      path: "/lang/:slug_lang/:slug_category/intents",
       name: "category",
       component: () =>
-        import(/* webpackChunkName: "category" */ "../views/lang/Category.vue")
+          import(/* webpackChunkName: "category" */ "../views/intents/Intents.vue")
     }
   ]
 });

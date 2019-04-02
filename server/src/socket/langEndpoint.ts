@@ -49,9 +49,10 @@ class LangEndpoint {
         category.slug = category.name.toLowerCase()
 
         if (lang.categories) { lang.categories.push(category) } else { lang.categories = [category] }
-        lang.save()
+        lang.save().then(() => {
+          this.getLangs(socket)
+        })
         socket.emit('success', !err)
-        this.getLangs(socket)
       })
     }
 }

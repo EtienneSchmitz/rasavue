@@ -16,41 +16,26 @@
         </v-card>
       </v-dialog>
     </v-layout>
-    <v-layout row wrap text-xs-left>
-      <v-flex xs3 mx-3>
-        <v-card>
-          <v-card-title>
-            <div>
-              <h3 class="headline">
-                Test
-              </h3>
-            </div>
-          </v-card-title>
-          <v-card-text text-xs-left>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt
-            vitae, necessitatibus sapiente nam doloremque minus, dicta aliquid
-            magnam eius ipsa quaerat eveniet, enim aspernatur autem quas labore
-            deleniti modi minima.
-          </v-card-text>
-        </v-card>
+    <v-container>
+    <v-layout row wrap text-xs-left fill-height>
+      <v-flex xs3 pa-2 mb-3 v-for="category in categories" :key="category._id">
+        <router-link :to="{ name: 'category', params: { slug_lang: $route.params.slug, slug_category: category.slug } }">
+        <v-card v-ripple height="100%">
+            <v-card-title>
+              <div>
+                <h3 class="headline">
+                 {{ category.name | capitalize }}
+                </h3>
+              </div>
+            </v-card-title>
+            <v-card-text text-xs-left>
+              {{ category.description }}
+            </v-card-text>
+          </v-card>
+        </router-link>
       </v-flex>
-      <v-flex xs3 mx-3>
-        <v-card>
-          <v-card-title>
-            <h3 class="headline">
-              Test 2
-            </h3>
-          </v-card-title>
-          <v-card-text>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt
-            vitae, necessitatibus sapiente nam doloremque minus, dicta aliquid
-            magnam eius ipsa quaerat eveniet, enim aspernatur autem quas labore
-            deleniti modi minima.
-          </v-card-text>
-        </v-card>
-      </v-flex>
-      <h1>{{ categories }}</h1>
     </v-layout>
+    </v-container>
   </div>
 </template>
 
@@ -67,6 +52,13 @@ export default {
     return {
       dialog: false
     };
+  },
+  filters: {
+    capitalize: function (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.charAt(0).toUpperCase() + value.slice(1)
+    }
   },
   computed: {
     ...mapGetters({
@@ -99,4 +91,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+  a {
+    text-decoration: none;
+  }
+</style>

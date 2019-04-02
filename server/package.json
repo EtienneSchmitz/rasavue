@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently --kill-others \"tsc -w\" \"nodemon build/server.js\"",
-    "lint" : "eslint src/**/* --fix"
+    "lint": "eslint src/**/* --fix"
   },
   "keywords": [
     "server"
@@ -20,11 +20,12 @@
     "mongoose": "^5.4.20",
     "mongoose-unique-array": "^0.3.1",
     "socket.io": "^2.2.0",
-    "typescript": "^3.4.1"
+    "typescript": "^3.4.0"
   },
   "devDependencies": {
     "@types/mongoose": "^5.3.24",
     "@typescript-eslint/eslint-plugin": "^1.5.0",
+    "@typescript-eslint/parser": "^1.5.0",
     "concurrently": "^4.1.0",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
@@ -32,7 +33,6 @@
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-standard": "^4.0.0",
-    "nodemon": "^1.18.10",
-    "typescript-eslint-parser": "^22.0.0"
+    "nodemon": "^1.18.10"
   }
 }
