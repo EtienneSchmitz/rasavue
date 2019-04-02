@@ -15,8 +15,9 @@ module.exports = {
     'sourceType': 'module'
   },
   'rules': {
+        //Add a semi-colon
+        "semi" : ["error", "always"],
         // note you must disable the base rule as it can report incorrect errors
-        "no-unused-vars": "off",
-        //"typescript/no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }]
+        "no-unused-vars": "off"
   }
-}
+};

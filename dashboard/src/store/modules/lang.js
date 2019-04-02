@@ -25,7 +25,7 @@ export default {
     },
     get_lang_by_slug(state) {
       return slug => {
-        console.log(slug)
+        console.log(slug);
         let lang = _.find(state.langs, _.matches({ slug: slug }));
         console.log(lang);
         if (lang) {

@@ -37,8 +37,8 @@ export default {
     },
     submit() {
       this.$emit("submit", this.name, this.description);
-      this.name="";
-      this.description= "";
+      this.name = "";
+      this.description = "";
     }
   }
 };

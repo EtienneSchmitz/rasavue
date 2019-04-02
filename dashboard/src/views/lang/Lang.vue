@@ -19,7 +19,9 @@
     <v-container>
       <v-layout row wrap space-between justify-space-between>
         <v-flex xs12 md6 wrap v-for="lang in langs" :key="lang._id" pa-2>
-          <router-link :to="{ name: 'categories', params: { slug: lang.slug } }">
+          <router-link
+            :to="{ name: 'categories', params: { slug: lang.slug } }"
+          >
             <v-card v-ripple>
               <v-img src="https://via.placeholder.com/775x250.png" />
               <v-card-title>

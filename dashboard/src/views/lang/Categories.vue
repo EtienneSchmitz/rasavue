@@ -17,24 +17,38 @@
       </v-dialog>
     </v-layout>
     <v-container>
-    <v-layout row wrap text-xs-left fill-height>
-      <v-flex xs3 pa-2 mb-3 v-for="category in categories" :key="category._id">
-        <router-link :to="{ name: 'category', params: { slug_lang: $route.params.slug, slug_category: category.slug } }">
-        <v-card v-ripple height="100%">
-            <v-card-title>
-              <div>
-                <h3 class="headline">
-                 {{ category.name | capitalize }}
-                </h3>
-              </div>
-            </v-card-title>
-            <v-card-text text-xs-left>
-              {{ category.description }}
-            </v-card-text>
-          </v-card>
-        </router-link>
-      </v-flex>
-    </v-layout>
+      <v-layout row wrap text-xs-left fill-height>
+        <v-flex
+          xs3
+          pa-2
+          mb-3
+          v-for="category in categories"
+          :key="category._id"
+        >
+          <router-link
+            :to="{
+              name: 'category',
+              params: {
+                slug_lang: $route.params.slug,
+                slug_category: category.slug
+              }
+            }"
+          >
+            <v-card v-ripple height="100%">
+              <v-card-title>
+                <div>
+                  <h3 class="headline">
+                    {{ category.name | capitalize }}
+                  </h3>
+                </div>
+              </v-card-title>
+              <v-card-text text-xs-left>
+                {{ category.description }}
+              </v-card-text>
+            </v-card>
+          </router-link>
+        </v-flex>
+      </v-layout>
     </v-container>
   </div>
 </template>
@@ -54,10 +68,10 @@ export default {
     };
   },
   filters: {
-    capitalize: function (value) {
-      if (!value) return ''
-      value = value.toString()
-      return value.charAt(0).toUpperCase() + value.slice(1)
+    capitalize: function(value) {
+      if (!value) return "";
+      value = value.toString();
+      return value.charAt(0).toUpperCase() + value.slice(1);
     }
   },
   computed: {
@@ -69,7 +83,7 @@ export default {
       return this.getCategoriesBySlug(this.$route.params.slug); // logs "hello"
     }
   },
-  methods : {
+  methods: {
     add(name, description) {
       this.dialog = false;
       let lang_id = this.getLangBySlug(this.$route.params.slug);
@@ -92,7 +106,7 @@ export default {
 </script>
 
 <style scoped>
-  a {
-    text-decoration: none;
-  }
+a {
+  text-decoration: none;
+}
 </style>
