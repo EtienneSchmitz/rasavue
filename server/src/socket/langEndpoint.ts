@@ -1,12 +1,14 @@
 import { model, Model } from 'mongoose';
-import { ILangModel, ICategory } from '../interfaces/lang';
+import { ILangModel, ICategoryModel } from '../interfaces/lang';
 import { Socket } from 'socket.io';
 
 class LangEndpoint {
-    Model_ : Model<ILangModel>;
+    ModelLang_ : Model<ILangModel>;
+    ModelCategory_ : Model<ICategoryModel>;
 
     constructor () {
-      this.Model_ = model('lang');
+      this.ModelLang_ = model('lang');
+      this.ModelCategory_ = model('category');
     }
 
     /** Add a language in the database.
@@ -16,7 +18,7 @@ class LangEndpoint {
      * @return True if success.
      */
     addLang (lang: ILangModel, socket: Socket): void {
-      let newLang = new this.Model_(lang);
+      let newLang = new this.ModelLang_(lang);
       newLang.slug = newLang.name.toLowerCase();
       newLang.save(err => {
         if (err) {
@@ -34,28 +36,54 @@ class LangEndpoint {
      * @return all langs.
      */
     getLangs (socket : Socket) : void {
-      this.Model_.find({}, function (err, langs) {
-        if (!err) {
-          socket.emit('get lang', langs);
-        }
-      });
+      this.ModelLang_.aggregate([
+          {
+              '$lookup': {
+                  from: 'categories',
+                  localField: 'categories',
+                  foreignField: '_id',
+                  as: 'categoryItem'
+              }
+          }
+
+      ], function (err: Error, lang: [ILangModel]) {
+          console.log(lang)
+          if (!err) {
+              socket.emit('get lang', lang);
+          }
+      })
+
+
     }
 
     /**
      * TODO add an error when the category is not set.
      */
-    addCategory (socket: Socket, id : Number, category: ICategory) {
-      console.log(category);
-      console.log(id);
-      this.Model_.findOne({ _id: id }, (err, lang : ILangModel) => {
-        category.slug = category.name.toLowerCase();
+    addCategory (socket: Socket, id : Number, category: ICategoryModel) {
+      this.ModelLang_.findOne({ _id: id }, (err, lang : ILangModel) => {
+          if(err) { return;}
+          category.slug = category.name.toLowerCase();
+          category.lang_id = lang._id;
 
-        if (lang.categories) { lang.categories.push(category); } else { lang.categories = [category]; }
-        lang.save().then(() => {
-          this.getLangs(socket);
+          let newCategory = new this.ModelCategory_(category);
+
+          newCategory.save().then(
+              () => {
+                  if(lang.categories)
+                      lang.categories.push(newCategory._id);
+                  else
+                      lang.categories = [newCategory._id];
+
+
+                  lang.save().then(() => {
+                      newCategory.save().then( () => {
+                          this.getLangs(socket);})
+
+                      socket.emit('success', !err);
+                  });
+              }
+          )
         });
-        socket.emit('success', !err);
-      });
     }
 }
 

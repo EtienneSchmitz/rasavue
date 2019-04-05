@@ -4,10 +4,12 @@ export interface ILangModel extends Document {
     name: String,
     url: String,
     slug ?: String,
-    categories: [ICategory]
+    categories ?: [number],
+    categoryItem ?: [ICategoryModel]
 }
 
-export interface ICategory extends Document {
+export interface ICategoryModel extends Document {
+    lang_id : number,
     name: String,
     description: String,
     slug: String

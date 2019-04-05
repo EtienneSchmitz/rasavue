@@ -18,7 +18,7 @@ export default {
       return slug => {
         let lang = _.find(state.langs, _.matches({ slug: slug }));
         if (lang) {
-          return lang.categories;
+          return lang.categoryItem;
         }
         return undefined;
       };
