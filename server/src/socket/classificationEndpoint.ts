@@ -1,5 +1,5 @@
 import { model, Model } from 'mongoose';
-import { ILangModel, ICategoryModel } from '../interfaces/lang';
+import { ILangModel, ICategoryModel } from '../schemas/classification';
 import { Socket } from 'socket.io';
 
 class LangEndpoint {
@@ -7,7 +7,7 @@ class LangEndpoint {
     ModelCategory_ : Model<ICategoryModel>;
 
     constructor () {
-      this.ModelLang_ = model('lang');
+      this.ModelLang_ = model('classification.ts');
       this.ModelCategory_ = model('category');
     }
 
@@ -56,9 +56,6 @@ class LangEndpoint {
 
     }
 
-    /**
-     * TODO add an error when the category is not set.
-     */
     addCategory (socket: Socket, id : Number, category: ICategoryModel) {
       this.ModelLang_.findOne({ _id: id }, (err, lang : ILangModel) => {
           if(err) { return;}

@@ -1,0 +1,35 @@
+# --- COMMIT BEGIN ---
+# <type>(<scope>): (If applied, this commit will...) <subject> (Max 50 char)
+# |<----  Using a Maximum Of 50 Characters -->|
+
+# Body : Explain why this change is being made
+# |<----  Try To Limit Each Line to a Maximum Of 72 Characters   ---->|
+
+# --- COMMIT END ---
+
+
+# --- COMMIT HELP ---
+
+# <type> can be
+#    feat       (new feature)
+#    fix        (bug fix)
+#    refactor   (refactoring production code)
+#    test       (adding or refactoring tests; no production code change)
+#    chore      (updating scripts etc; no production code change)
+# --------------------
+# <scope> can be
+#   dashboard
+#   server
+#   general
+#   configuration
+#
+# --------------------
+# Remember to
+#    Capitalize the subject line
+#    Separate subject from body with a blank line (comments don't count)
+#    Use the body to explain what and why vs. how
+#    Can use multiple lines with "-" for bullet points in body
+#
+# If you can't summarize your changes in a single line, they should
+# probably be split into multiple commits
+# --------------------

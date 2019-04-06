@@ -1,6 +1,27 @@
 import { Document, Schema, Model, model } from 'mongoose';
-import {ICategoryModel, ILangModel} from '../interfaces/lang';
-const arrayUniquePlugin = require('mongoose-unique-array');
+
+/*
+ * Interface declaration (Typescript)
+ */
+
+export interface ILangModel extends Document {
+    name: String,
+    url: String,
+    slug ?: String,
+    categories ?: [number],
+    categoryItem ?: [ICategoryModel]
+}
+
+export interface ICategoryModel extends Document {
+    lang_id : number,
+    name: String,
+    description: String,
+    slug: String
+}
+
+/*
+ * Schema foundation
+ */
 
 let langSchema : Schema = new Schema({
   name: { type: String, unique: true, required: true, dropDups: true },
@@ -17,6 +38,10 @@ let categorySchema : Schema = new Schema({
     description: { type:  String, dropDups: true },
     slug: { type: String, unique: true, dropDups: true }
 });
+
+/*
+ * Schema declaration
+ */
 
 export const lang: Model<ILangModel> = model<ILangModel>('lang', langSchema);
 export const category : Model<ICategoryModel> = model<ICategoryModel>('category', categorySchema);
