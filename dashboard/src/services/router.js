@@ -27,6 +27,13 @@ export default new Router({
       name: "category",
       component: () =>
         import(/* webpackChunkName: "category" */ "../views/intents/Intents.vue")
-    }
+    },
+    {
+      path: "/lang/:slug_lang/:slug_category/entity",
+      name: "entity",
+      component: () =>
+          import(/* webpackChunkName: "category" */ "../views/intents/EntityHome.vue")
+    },
+
   ]
 });
