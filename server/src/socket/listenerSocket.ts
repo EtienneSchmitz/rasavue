@@ -27,7 +27,13 @@ export function socketListener (socket: Socket) {
     lang.addCategory(socket, idNumber, data);
   });
 
-  socket.on('add entity', (idCategory, type, data) => {
-    nlu.createEntity(socket, idCategory, type, data);
+  socket.on('add entity', (categoryId, type, data) => {
+    nlu.createEntity(socket, categoryId, type, data);
   })
+
+  socket.on('get entity', (categoryId) => {
+    nlu.getEntityByCategoryId(socket,categoryId);
+  })
+
+  socket.on('error', function () {});
 }
