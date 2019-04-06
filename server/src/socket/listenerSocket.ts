@@ -1,29 +1,33 @@
-import {Socket} from "socket.io";
-import lang from "./classificationEndpoint";
+import { Socket } from 'socket.io';
+import lang from './classificationEndpoint';
+import nlu from './nluEndpoint'
 
 /*
  * All socket send on the user during the first connection of the users.
  */
-export function init(socket : Socket) {
-    lang.getLangs(socket);
+export function init (socket: Socket) {
+  lang.getLangs(socket);
 }
 
 /*
  * Create all listen event for the socket.
  */
-export function socket_listener (socket : Socket) {
+export function socketListener (socket: Socket) {
+  /**
+   * TODO add an error when the category is not set.
+   */
+  socket.on('add lang', data => {
+    lang.addLang(data, socket);
+  });
 
-    /**
-     * TODO add an error when the category is not set.
-     */
-    socket.on("add lang", (data) => {
-        lang.addLang(data, socket);
-    });
+  /**
+   * TODO add an error when the category is not set.
+   */
+  socket.on('add category', (idNumber, data) => {
+    lang.addCategory(socket, idNumber, data);
+  });
 
-    /**
-     * TODO add an error when the category is not set.
-     */
-    socket.on("add category", (id_number, data) => {
-        lang.addCategory(socket, id_number, data);
-    });
+  socket.on('add entity', (idCategory, type, data) => {
+    nlu.createEntity(socket, idCategory, type, data);
+  })
 }
