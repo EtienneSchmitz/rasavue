@@ -10,6 +10,7 @@ import {
 } from '../interfaces/nlu';
 import {Socket} from "socket.io";
 import _ from "lodash";
+import {agent} from "../schemas/nlu";
 
 class nluEndpoint {
     ModelIntent_: Model<IIntentModel>;
@@ -31,12 +32,13 @@ class nluEndpoint {
     /**
      * Create an entity.
      *
-     * @param socket The Socket
      * @param categoryId The id of category link with the new entity.
      * @param type The type of the entity (simple, regexp, lookup, synonyms)
      * @param entity The entity data (see all interfaces of nlu to see the difference between the entitie type).
+     *
+     * @return A promise with the save or null.
      */
-    createEntity(socket : Socket, categoryId : number,  type : TypeEntity, entity : IEntityModel) {
+     createEntity(categoryId : number,  type : TypeEntity, entity : IEntityModel) : Promise<IEntityModel> | null {
         let newEntity : IEntityModel | null = null;
 
         if(type == TypeEntity.Simple) {
@@ -51,24 +53,21 @@ class nluEndpoint {
 
         if(newEntity !== null){
             newEntity.categoryId = categoryId;
-            newEntity.save((err) => {
-                socket.emit('success', "Entity saved in the database");
-            });
+            return newEntity.save();
         } else {
-            socket.emit('error', "Type is not good");
+            return null;
         }
     }
 
     /**
      * Get the entity by the type and the category id.
      *
-     * @param socket The Socket
      * @param categoryId The id of category link with the new entity.
      * @param type The type of the entity (simple, regexp, lookup, synonyms)
      *
-     * @send Send the socket category get category;
+     * @return A promise with the result of the query.
      */
-    async getEntitybyTypeAndCategory(socket : Socket, categoryId: number, type : string) {
+     getEntitybyTypeAndCategory(categoryId: number, type : string) {
         let query  = null;
 
         if(type == TypeEntity.Simple) {
@@ -80,51 +79,73 @@ class nluEndpoint {
         } else if(type == TypeEntity.Regexp) {
             query = this.ModelRegexpEntity_.find({'categoryId' : categoryId},null,null);
         } else {
-            socket.emit('error', "Type is not good");
+            return null;
         }
 
         if(query == undefined) {
             return null;
         } else {
-            let entities;
-            var promise = query.exec();
-            return await promise.then( (docs) => {
-               return docs;
+            return query.exec().then((docs) =>{
+                return docs;
+            }).catch(() =>{
+                return null;
             });
         }
     }
 
-    async getEntityByCategoryId(socket : Socket, categoryId : number) {
+    /**
+     * Get all entity the category id.
+     *
+     * @param categoryId The id of category link with the new entity.
+     *
+     * @return A promise with the result.
+     */
+     async getEntityByCategoryId(categoryId : number) {
         let results : any = [];
         for (let typeEntityKey in TypeEntity) {
-            let entities = await this.getEntitybyTypeAndCategory(socket, categoryId,TypeEntity[typeEntityKey]);
-            if(entities !== null ) {
-                //console.log(entities)
-                results = _.concat(results,entities);
+            let entities = await this.getEntitybyTypeAndCategory(categoryId,TypeEntity[typeEntityKey]);
 
+            if(entities !== null ) {
+                results = _.concat(results, entities);
+            } else {
+                return null;
             }
         }
-        socket.emit('receive entity', results);
+        return results;
+     }
+
+    async addAgent(categoryId : number, agent : any) : Promise<IAgentModel> {
+         let newAgent = new this.ModelAgent_(agent);
+         newAgent.categoryId = categoryId;
+         return newAgent.save();
     }
 
-    addAgent(socket : Socket, categoryId : number, data : any) {
-
+    getAgentByCategoryId(categoryId : number) {
+        let query = this.ModelAgent_.find({'categoryId' : categoryId},null,null);
+        return query.exec().then((docs) =>{
+            return docs;
+        }).catch(() =>{
+            return null;
+        });
     }
 
-    getAgentByCategoryId(socket : Socket, categoryId : number) {
-
+    addIntent(agentId : number, intent: any) {
+        let newIntent = new this.ModelIntent_(intent);
+        newIntent.agentId = agentId;
+        return newIntent.save();
     }
 
-    addIntent(socket : Socket, agentId : number, data: any) {
-
+    getIntentByAgentId(agentId : number) {
+        let query = this.ModelIntent_.find({'agentId' : agentId},null,null);
+        return query.exec().then((docs) =>{
+            return docs;
+        }).catch(() =>{
+            return null;
+        });
     }
 
-    getIntentByAgentId(socket : Socket, agentId : number) {
-
-    }
-
-    trainNLU(socket : Socket) {
-
+    trainNLU() {
+        return true;
     }
 }
 

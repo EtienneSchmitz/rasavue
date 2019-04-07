@@ -3,7 +3,7 @@ import { IAgentModel, IIntentModel, IEntityModel, IEntityRegexpModel,
   IEntityLookupModel, IEntitySynonymsModel } from '../interfaces/nlu';
 
 const agentSchema : Schema = new Schema({
-  category_id: { type: Schema.Types.ObjectId, ref: 'category' },
+  categoryId: { type: Schema.Types.ObjectId, ref: 'category' },
   name: { type: String }
 });
 

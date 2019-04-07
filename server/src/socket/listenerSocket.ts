@@ -1,6 +1,7 @@
 import { Socket } from 'socket.io';
 import lang from './classificationEndpoint';
 import nlu from './nluEndpoint'
+import {category} from "../schemas/classification";
 
 /*
  * All socket send on the user during the first connection of the users.
@@ -27,13 +28,102 @@ export function socketListener (socket: Socket) {
     lang.addCategory(socket, idNumber, data);
   });
 
-  socket.on('add entity', (categoryId, type, data) => {
-    nlu.createEntity(socket, categoryId, type, data);
-  })
+  /**********************************************************************
+   *                              Entity Socket                         *
+   **********************************************************************/
 
-  socket.on('get entity', (categoryId) => {
-    nlu.getEntityByCategoryId(socket,categoryId);
-  })
+  socket.on('create entity', async (categoryId, type, data) => {
+    let result = nlu.createEntity(categoryId, type, data);
 
-  socket.on('error', function () {});
+    if(result) {
+      result.then(() => {
+        socket.emit('success');
+      }).catch(() => {
+        socket.emit('server error', 'Problem to save the entity');
+      });
+    } else {
+      socket.emit('server error','Problem to save the entity');
+    }
+  });
+
+  socket.on('get entity', async (categoryId) => {
+    let response = await nlu.getEntityByCategoryId(categoryId);
+
+    if(response == null) {
+      socket.emit('server error', "Error in the category Id or in the type entity.");
+    } else {
+      socket.emit("response entity", response);
+    }
+  });
+
+  /**********************************************************************
+   *                               Agent Socket                         *
+   **********************************************************************/
+
+  socket.on('add agent', (categoryId, agent) => {
+    if(agent !== null && agent.name !== null && categoryId !== null) {
+      let response = nlu.addAgent(categoryId, agent);
+      if(response) {
+        response.then(() => {
+          socket.emit('success');
+        }).catch((err) => {
+          socket.emit('server error', 'Problem to save the agent');
+        });
+      }
+    } else {
+      socket.emit('server error','The data provided by this socket is not good');
+    }
+  });
+
+
+  socket.on('get agent', async (categoryId) => {
+    if(categoryId != null) {
+      let result = await nlu.getAgentByCategoryId(categoryId);
+      socket.emit('response agent', result);
+    } else {
+      socket.emit('server error','The data provided by this socket is not good');
+    }
+  });
+
+  /**********************************************************************
+   *                         Intent Socket                              *
+   **********************************************************************/
+
+  socket.on('add intent', (agentId, intent) => {
+    if(intent !== null && intent.text !== null && agentId !== null) {
+      let response = nlu.addIntent(agentId, intent);
+      if(response) {
+        response.then(() => {
+          socket.emit('success');
+        }).catch((err) => {
+          socket.emit('server error', 'Problem to save the intent');
+        });
+      }
+    } else {
+      socket.emit('server error','The data provided by this socket is not good');
+    }
+  });
+
+
+  socket.on('get intent', async (agentId) => {
+    if(agentId != null) {
+      let result = await nlu.getIntentByAgentId(agentId);
+      socket.emit('response intent', result);
+    } else {
+      socket.emit('server error','The data provided by this socket is not good');
+    }
+  });
+
+  /**********************************************************************
+   *                          NLU Socket                                *
+   **********************************************************************/
+
+  socket.on('train nlu', () => {
+    let isSucess : boolean = nlu.trainNLU();
+    if(isSucess) {
+      socket.emit('sucess');
+    } else {
+      socket.emit('server error');
+    }
+  });
 }
