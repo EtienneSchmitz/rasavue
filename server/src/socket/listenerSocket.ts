@@ -119,9 +119,9 @@ export function socketListener (socket: Socket) {
    **********************************************************************/
 
   socket.on('train nlu', () => {
-    let isSucess : boolean = nlu.trainNLU();
-    if(isSucess) {
-      socket.emit('sucess');
+    let isSuccess : boolean = nlu.trainNLU();
+    if(isSuccess) {
+      socket.emit('success');
     } else {
       socket.emit('server error');
     }
