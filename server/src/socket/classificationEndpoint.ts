@@ -55,6 +55,16 @@ class LangEndpoint {
     );
   }
 
+  getAllCategory() {
+    let query = this.ModelCategory_.find();
+
+    return query.exec().then((categories) =>{
+      return categories;
+    }).catch(() =>{
+      return null;
+  });
+  }
+
   addCategory (socket: Socket, id: Number, category: ICategoryModel) {
     this.ModelLang_.findOne({ _id: id }, (err, lang: ILangModel) => {
       if (err) {

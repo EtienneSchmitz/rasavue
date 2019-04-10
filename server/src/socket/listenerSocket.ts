@@ -118,8 +118,8 @@ export function socketListener (socket: Socket) {
    *                          NLU Socket                                *
    **********************************************************************/
 
-  socket.on('train nlu', () => {
-    let isSuccess : boolean = nlu.trainNLU();
+  socket.on('train nlu', async () => {
+    let isSuccess : boolean = await nlu.trainNLU();
     if(isSuccess) {
       socket.emit('success');
     } else {

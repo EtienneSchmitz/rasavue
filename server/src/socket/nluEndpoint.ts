@@ -9,8 +9,10 @@ import {
     TypeEntity
 } from '../interfaces/nlu';
 import {Socket} from "socket.io";
+import classification from "./classificationEndpoint";
 import _ from "lodash";
 import {agent} from "../schemas/nlu";
+import { ICategoryModel } from '../interfaces/classification';
 
 class nluEndpoint {
     ModelIntent_: Model<IIntentModel>;
@@ -144,7 +146,35 @@ class nluEndpoint {
         });
     }
 
-    trainNLU() {
+    async trainNLU() {
+
+        // Create objet
+        let result = {
+            "rasa_nlu_data" : {
+                "common_examples": [],
+                "regex_features" : [],
+                "lookup_tables"  : [],
+                "entity_synonyms": []
+            }
+        }
+
+        // Take all category 
+        let categories = await classification.getAllCategory();
+        if(categories === null) { return false; }
+
+        categories.forEach(async category => {
+            console.log(category);
+            // Get Intents of all categories.
+            let agents = await this.getAgentByCategoryId(category._id);
+            if(agents === null) { return false; }
+            // Each one intent take the and put in the right table.
+            agents.forEach(agent => {
+                let intents = this.getIntentByAgentId(agent._id);
+                
+            });
+
+        });
+
         return true;
     }
 }
