@@ -33,6 +33,8 @@ export function socketListener (socket: Socket) {
    **********************************************************************/
 
   socket.on('create entity', async (categoryId, type, data) => {
+    console.log(type);
+    console.log(data);
     let result = nlu.createEntity(categoryId, type, data);
 
     if(result) {
@@ -64,8 +66,10 @@ export function socketListener (socket: Socket) {
     if(agent !== null && agent.name !== null && categoryId !== null) {
       let response = nlu.addAgent(categoryId, agent);
       if(response) {
-        response.then(() => {
-          socket.emit('success');
+        response.then(async() => {
+          
+        let result = await nlu.getAgentByCategoryId(categoryId);
+        socket.emit('response agent', result);
         }).catch((err) => {
           socket.emit('server error', 'Problem to save the agent');
         });

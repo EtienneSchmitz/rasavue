@@ -116,6 +116,44 @@ class nluEndpoint {
         return results;
      }
 
+        async getEntitybyTypeAndId(id: number, type : string) {
+        let query  = null;
+
+        if(type == TypeEntity.Simple) {
+            query = this.ModelSimpleEntity_.find({'_id' : id},null,null);
+        } else if(type == TypeEntity.Synonyms) {
+            query = this.ModelSynonymEntity_.find({'_id' : id},null,null);
+        } else if(type == TypeEntity.Lookup) {
+            query =  this.ModelLookupEntity_.find({'_id' : id},null,null);
+        } else if(type == TypeEntity.Regexp) {
+            query = this.ModelRegexpEntity_.find({'_id' : id},null,null);
+        } else {
+            return null;
+        }
+
+        if(query == undefined) {
+            return null;
+        } else {
+            return query.exec().then((docs) =>{
+                return docs;
+            }).catch(() =>{
+                return null;
+            });
+        }
+    }
+
+     async getEntityById(id : number) {
+        for (let typeEntityKey in TypeEntity) {
+            let entities = await this.getEntitybyTypeAndId(id,TypeEntity[typeEntityKey]);
+
+            if(entities !== null ) {
+                return entities;
+            } else {
+                return null;
+            }
+        }
+     }
+
     async addAgent(categoryId : number, agent : any) : Promise<IAgentModel> {
          let newAgent = new this.ModelAgent_(agent);
          newAgent.categoryId = categoryId;
@@ -149,9 +187,9 @@ class nluEndpoint {
     async trainNLU() {
 
         // Create objet
-        let result = {
+        let model_nlu = {
             "rasa_nlu_data" : {
-                "common_examples": [],
+                "common_examples": [Object],
                 "regex_features" : [],
                 "lookup_tables"  : [],
                 "entity_synonyms": []
@@ -163,13 +201,56 @@ class nluEndpoint {
         if(categories === null) { return false; }
 
         categories.forEach(async category => {
-            console.log(category);
             // Get Intents of all categories.
             let agents = await this.getAgentByCategoryId(category._id);
             if(agents === null) { return false; }
             // Each one intent take the and put in the right table.
-            agents.forEach(agent => {
-                let intents = this.getIntentByAgentId(agent._id);
+            agents.forEach(async agent => {
+                let intents = await this.getIntentByAgentId(agent._id);
+
+                if(intents == null) { return false;}
+                intents.forEach(async intent => {
+                    let entities : any[]= [];
+                    if(intent.entities !== null ) {
+                        intent.entities.forEach(async (entity) => {
+                            let result : any = await this.getEntityById(entity.entityId);
+                            entities.push({
+                                start : entity.start,
+                                end : entity.end,
+                                value : entity.value,
+                                entity : result.entityName
+                            });
+                        })
+                    }
+                    let intent_result : any = {
+                        text : intent.text,
+                        intent : agent.name,
+                        entities : entities
+                    };
+
+                    model_nlu['rasa_nlu_data']['common_examples'].push(intent_result);
+
+                    // Ajouter les entités regexp.
+                    
+                    let results = await this.getEntitybyTypeAndCategory(category._id,TypeEntity.Regexp);
+
+                    if(results !== null) {
+                        results.forEach((regexp : any) => {
+                            let regexp_model = {
+                                pattern : regexp.pattern,
+                                name : regexp.name
+                            }
+                            model_nlu['rasa_nlu_data']['common_examples'].push(regexp_model);
+                        })
+                    }
+
+                    // Ajouter les lookups
+
+                    // Ajouter les synonyms
+
+                    // Write a files with RASA NLU.
+                    
+                });
                 
             });
 

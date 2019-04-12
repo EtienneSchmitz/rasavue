@@ -40,7 +40,7 @@ let entityRegexpSchema : Schema = new Schema({
 
 let entitySynonymsSchema : Schema = new Schema({
   value: String,
-  elements: String
+  elements: [String]
 });
 
 const Entity = model<IEntityModel>('entity', entityBaseSchema);
